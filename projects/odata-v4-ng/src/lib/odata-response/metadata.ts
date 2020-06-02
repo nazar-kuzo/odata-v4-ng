@@ -94,6 +94,8 @@ export class Metadata {
     private static readonly ATTRIBUTE_EXTENDS = 'Extends';
     private static readonly ATTRIBUTE_BASE_TERM = 'BaseTerm';
     private static readonly ATTRIBUTE_APPLIES_TO = 'AppliesTo';
+    private static readonly ATTRIBUTE_EXPRESSION_KIND_STRING_CONSTANT = 'String';
+    private static readonly ATTRIBUTE_EXPRESSION_KIND_BOOL_CONSTANT = 'Bool';
 
     public readonly version: string;
     public readonly references: CsdlReference[];
@@ -212,7 +214,8 @@ export class Metadata {
                 case Metadata.TAG_ANNOTATION:
                     objects.push(new CsdlAnnotation(
                         fieldValues[0],
-                        fieldValues[1]
+                        fieldValues[1],
+                        fieldValues[2] || fieldValues[3]
                     ));
                     break;
                 case Metadata.TAG_SCHEMA:
@@ -269,7 +272,8 @@ export class Metadata {
                 case Metadata.TAG_MEMBER:
                     objects.push(new CsdlEnumMember(
                         fieldValues[0],
-                        fieldValues[1]));
+                        fieldValues[1],
+                        fieldValues[2]));
                     break;
                 case Metadata.TAG_PROPERTY:
                     objects.push(new CsdlProperty(
@@ -281,7 +285,8 @@ export class Metadata {
                         fieldValues[5],
                         fieldValues[6],
                         fieldValues[7],
-                        fieldValues[8]));
+                        fieldValues[8],
+                        fieldValues[9]));
                     break;
                 case Metadata.TAG_PROPERTY_REF:
                     objects.push(new CsdlPropertyRef(
@@ -296,7 +301,8 @@ export class Metadata {
                         fieldValues[3],
                         fieldValues[4],
                         fieldValues[5],
-                        fieldValues[6]));
+                        fieldValues[6],
+                        fieldValues[7]));
                     break;
                 case Metadata.TAG_REFERENTIAL_CONSTRAINT:
                     objects.push(new CsdlReferentialConstraint(
@@ -465,6 +471,7 @@ export class Metadata {
             case Metadata.ATTRIBUTE_EXTENDS:
             case Metadata.ATTRIBUTE_BASE_TERM:
             case Metadata.ATTRIBUTE_APPLIES_TO:
+            case Metadata.ATTRIBUTE_EXPRESSION_KIND_STRING_CONSTANT:
                 return this.getAttributeValue(attributes, field.name);
             case Metadata.ATTRIBUTE_NULLABLE:
             case Metadata.ATTRIBUTE_UNICODE:
@@ -476,7 +483,8 @@ export class Metadata {
             case Metadata.ATTRIBUTE_INCLUDE_IN_SERVICE_DOCUMENT:
             case Metadata.ATTRIBUTE_ABSTRACT:
             case Metadata.ATTRIBUTE_IS_FLAGS:
-                return this.propertyValueToBoolean(this.getAttributeValue(attributes, field.name));
+            case Metadata.ATTRIBUTE_EXPRESSION_KIND_BOOL_CONSTANT:
+              return this.propertyValueToBoolean(this.getAttributeValue(attributes, field.name));
             case Metadata.ATTRIBUTE_VALUE:
             case Metadata.ATTRIBUTE_MAX_LENGTH:
             case Metadata.ATTRIBUTE_PRECISION:
@@ -521,7 +529,9 @@ export class Metadata {
             case Metadata.TAG_ANNOTATION:
                 return this.getObjects(element, field.name, [
                     new Field(Metadata.ATTRIBUTE_TERM, FieldType.ATTRIBUTE),
-                    new Field(Metadata.ATTRIBUTE_QUALIFIER, FieldType.ATTRIBUTE)
+                    new Field(Metadata.ATTRIBUTE_QUALIFIER, FieldType.ATTRIBUTE),
+                    new Field(Metadata.ATTRIBUTE_EXPRESSION_KIND_STRING_CONSTANT, FieldType.ATTRIBUTE),
+                    new Field(Metadata.ATTRIBUTE_EXPRESSION_KIND_BOOL_CONSTANT, FieldType.ATTRIBUTE)
                 ]);
             case Metadata.TAG_ENUM_TYPE:
                 return this.getObjects(element, field.name, [
@@ -562,13 +572,15 @@ export class Metadata {
             case Metadata.TAG_MEMBER:
                 return this.getObjects(element, field.name, [
                     new Field(Metadata.ATTRIBUTE_NAME, FieldType.ATTRIBUTE),
-                    new Field(Metadata.ATTRIBUTE_VALUE, FieldType.ATTRIBUTE)
+                    new Field(Metadata.ATTRIBUTE_VALUE, FieldType.ATTRIBUTE),
+                    new Field(Metadata.TAG_ANNOTATION, FieldType.TAG)
                 ]);
             case Metadata.TAG_PROPERTY:
                 return this.getObjects(element, field.name, [
                     new Field(Metadata.ATTRIBUTE_NAME, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_TYPE, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_NULLABLE, FieldType.ATTRIBUTE),
+                    new Field(Metadata.TAG_ANNOTATION, FieldType.TAG),
                     new Field(Metadata.ATTRIBUTE_MAX_LENGTH, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_PRECISION, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_SCALE, FieldType.ATTRIBUTE),
@@ -590,6 +602,7 @@ export class Metadata {
                     new Field(Metadata.ATTRIBUTE_NAME, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_TYPE, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_NULLABLE, FieldType.ATTRIBUTE),
+                    new Field(Metadata.TAG_ANNOTATION, FieldType.TAG),
                     new Field(Metadata.ATTRIBUTE_PARTNER, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_CONTAINS_TARGET, FieldType.ATTRIBUTE),
                     new Field(Metadata.TAG_REFERENTIAL_CONSTRAINT, FieldType.TAG),

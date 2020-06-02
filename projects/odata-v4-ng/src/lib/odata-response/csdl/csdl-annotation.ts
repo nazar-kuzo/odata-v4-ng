@@ -1,5 +1,11 @@
 export class CsdlAnnotable {
-    constructor(public annotationList?: CsdlAnnotation[]) { }
+    constructor(
+      public annotationList?: CsdlAnnotation[]
+      ) {
+        if (!this.annotationList) {
+          this.annotationList = [];
+        }
+      }
 }
 
 export class CsdlAnnotations extends CsdlAnnotable {
@@ -15,7 +21,8 @@ export class CsdlAnnotations extends CsdlAnnotable {
 export class CsdlAnnotation {
     constructor(
         public term: string,
-        public qualifier?: string
+        public qualifier?: string,
+        public value?: any,
     ) { }
 }
 

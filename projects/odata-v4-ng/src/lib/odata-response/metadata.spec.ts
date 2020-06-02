@@ -118,7 +118,7 @@ describe('Metadata', () => {
         expect(schema.entityTypes).toEqual([
             new CsdlEntityType('name', undefined, [
                 new CsdlProperty('name', 'Edm.String'),
-                new CsdlProperty('name', 'Edm.String', true, 1, 2, 3, false, '4', 'defaultValue')
+                new CsdlProperty('name', 'Edm.String', true, undefined, 1, 2, 3, false, '4', 'defaultValue')
             ])
         ]);
 
@@ -158,7 +158,7 @@ describe('Metadata', () => {
         expect(schema.entityTypes).toEqual([
             new CsdlEntityType('name', undefined, undefined, [
                 new CsdlNavigationProperty('name', 'type'),
-                new CsdlNavigationProperty('name', 'type', true, 'partner', false, [
+                new CsdlNavigationProperty('name', 'type', true, undefined, 'partner', false, [
                     new CsdlReferentialConstraint('property', 'referencedProperty')
                 ], new CsdlOnDelete('cascade'))
             ])
@@ -588,7 +588,7 @@ describe('Metadata', () => {
                 new CsdlProperty('BuildingInfo', 'Edm.String')
             ], undefined, 'Microsoft.OData.SampleService.Models.TripPin.Location', true),
             new CsdlComplexType('AirportLocation', [
-                new CsdlProperty('Loc', 'Edm.GeographyPoint', false, undefined, undefined, undefined, undefined, '4326')
+                new CsdlProperty('Loc', 'Edm.GeographyPoint', false, undefined, undefined, undefined, undefined, undefined, '4326')
             ], undefined, 'Microsoft.OData.SampleService.Models.TripPin.Location', true)
         ]);
     });
@@ -597,34 +597,34 @@ describe('Metadata', () => {
         const schema: CsdlSchema = schemas[0];
         expect(schema.entityTypes).toEqual([
             new CsdlEntityType('Photo', new CsdlKey([new CsdlPropertyRef('Id')]), [
-                new CsdlProperty('Id', 'Edm.Int64', false),
+                new CsdlProperty('Id', 'Edm.Int64', false, [new CsdlAnnotation('Org.OData.Core.V1.Permissions')]),
                 new CsdlProperty('Name', 'Edm.String')
             ], undefined, undefined, undefined, true),
             new CsdlEntityType('Person', new CsdlKey([new CsdlPropertyRef('UserName')]), [
-                new CsdlProperty('UserName', 'Edm.String', false),
+                new CsdlProperty('UserName', 'Edm.String', false, [new CsdlAnnotation('Org.OData.Core.V1.Permissions')]),
                 new CsdlProperty('FirstName', 'Edm.String', false),
                 new CsdlProperty('LastName', 'Edm.String', false),
                 new CsdlProperty('Emails', 'Collection(Edm.String)'),
                 new CsdlProperty('AddressInfo', 'Collection(Microsoft.OData.SampleService.Models.TripPin.Location)'),
                 new CsdlProperty('Gender', 'Microsoft.OData.SampleService.Models.TripPin.PersonGender'),
-                new CsdlProperty('Concurrency', 'Edm.Int64', false),
+                new CsdlProperty('Concurrency', 'Edm.Int64', false, [new CsdlAnnotation('Org.OData.Core.V1.Computed', undefined, true)]),
             ], [
                     new CsdlNavigationProperty('Friends', 'Collection(Microsoft.OData.SampleService.Models.TripPin.Person)'),
-                    new CsdlNavigationProperty('Trips', 'Collection(Microsoft.OData.SampleService.Models.TripPin.Trip)', undefined, undefined, true),
+                    new CsdlNavigationProperty('Trips', 'Collection(Microsoft.OData.SampleService.Models.TripPin.Trip)', undefined, undefined, undefined, true),
                     new CsdlNavigationProperty('Photo', 'Microsoft.OData.SampleService.Models.TripPin.Photo')
                 ], undefined, true),
             new CsdlEntityType('Airline', new CsdlKey([new CsdlPropertyRef('AirlineCode')]), [
-                new CsdlProperty('AirlineCode', 'Edm.String', false),
+                new CsdlProperty('AirlineCode', 'Edm.String', false, [new CsdlAnnotation('Org.OData.Core.V1.Permissions')]),
                 new CsdlProperty('Name', 'Edm.String', false)
             ]),
             new CsdlEntityType('Airport', new CsdlKey([new CsdlPropertyRef('IcaoCode')]), [
-                new CsdlProperty('IcaoCode', 'Edm.String', false),
+                new CsdlProperty('IcaoCode', 'Edm.String', false, [new CsdlAnnotation('Org.OData.Core.V1.Permissions')]),
                 new CsdlProperty('Name', 'Edm.String', false),
-                new CsdlProperty('IataCode', 'Edm.String', false),
+                new CsdlProperty('IataCode', 'Edm.String', false, [new CsdlAnnotation('Org.OData.Core.V1.Immutable', undefined, true)]),
                 new CsdlProperty('Location', 'Microsoft.OData.SampleService.Models.TripPin.AirportLocation', false)
             ]),
             new CsdlEntityType('PlanItem', new CsdlKey([new CsdlPropertyRef('PlanItemId')]), [
-                new CsdlProperty('PlanItemId', 'Edm.Int32', false),
+                new CsdlProperty('PlanItemId', 'Edm.Int32', false, [new CsdlAnnotation('Org.OData.Core.V1.Permissions')]),
                 new CsdlProperty('ConfirmationCode', 'Edm.String'),
                 new CsdlProperty('StartsAt', 'Edm.DateTimeOffset'),
                 new CsdlProperty('EndsAt', 'Edm.DateTimeOffset'),
@@ -645,17 +645,17 @@ describe('Metadata', () => {
                 new CsdlProperty('OccursAt', 'Microsoft.OData.SampleService.Models.TripPin.EventLocation', false),
             ], undefined, 'Microsoft.OData.SampleService.Models.TripPin.PlanItem', true),
             new CsdlEntityType('Trip', new CsdlKey([new CsdlPropertyRef('TripId')]), [
-                new CsdlProperty('TripId', 'Edm.Int32', false),
+                new CsdlProperty('TripId', 'Edm.Int32', false, [new CsdlAnnotation('Org.OData.Core.V1.Permissions')]),
                 new CsdlProperty('ShareId', 'Edm.Guid'),
                 new CsdlProperty('Description', 'Edm.String'),
                 new CsdlProperty('Name', 'Edm.String', false),
-                new CsdlProperty('Budget', 'Edm.Single', false),
+                new CsdlProperty('Budget', 'Edm.Single', false, [new CsdlAnnotation('Org.OData.Measures.V1.ISOCurrency', undefined, 'USD'), new CsdlAnnotation('Org.OData.Measures.V1.Scale')]),
                 new CsdlProperty('StartsAt', 'Edm.DateTimeOffset', false),
                 new CsdlProperty('EndsAt', 'Edm.DateTimeOffset', false),
                 new CsdlProperty('Tags', 'Collection(Edm.String)', false),
             ], [
                     new CsdlNavigationProperty('Photos', 'Collection(Microsoft.OData.SampleService.Models.TripPin.Photo)'),
-                    new CsdlNavigationProperty('PlanItems', 'Collection(Microsoft.OData.SampleService.Models.TripPin.PlanItem)', undefined, undefined, true),
+                    new CsdlNavigationProperty('PlanItems', 'Collection(Microsoft.OData.SampleService.Models.TripPin.PlanItem)', undefined, undefined, undefined, true),
                 ])
         ]);
     });

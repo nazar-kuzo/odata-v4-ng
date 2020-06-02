@@ -1,9 +1,14 @@
-export abstract class CsdlStructuralProperty {
+import { CsdlAnnotable, CsdlAnnotation } from './csdl-annotation';
+
+export abstract class CsdlStructuralProperty extends CsdlAnnotable {
     constructor(
         public name: string,
         public type: string,
-        public nullable?: boolean
-    ) { }
+        public nullable?: boolean,
+        annotationList?: CsdlAnnotation[]
+    ) {
+      super(annotationList);
+    }
 }
 
 export class CsdlProperty extends CsdlStructuralProperty {
@@ -11,6 +16,7 @@ export class CsdlProperty extends CsdlStructuralProperty {
         name: string,
         type: string,
         nullable?: boolean,
+        annotationList?: CsdlAnnotation[],
         public maxLength?: number,
         public precision?: number,
         public scale?: number,
@@ -18,7 +24,7 @@ export class CsdlProperty extends CsdlStructuralProperty {
         public srid?: string,
         public defaultValue?: string
     ) {
-        super(name, type, nullable);
+        super(name, type, nullable, annotationList);
     }
 }
 
@@ -27,12 +33,13 @@ export class CsdlNavigationProperty extends CsdlStructuralProperty {
         name: string,
         type: string,
         nullable?: boolean,
+        annotationList?: CsdlAnnotation[],
         public partner?: string,
         public containsTarget?: boolean,
         public referentialConstraints?: CsdlReferentialConstraint[],
         public onDelete?: CsdlOnDelete,
     ) {
-        super(name, type, nullable);
+        super(name, type, nullable, annotationList);
     }
 }
 

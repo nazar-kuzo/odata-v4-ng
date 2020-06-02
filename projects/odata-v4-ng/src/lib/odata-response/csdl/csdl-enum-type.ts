@@ -1,3 +1,5 @@
+import { CsdlAnnotable, CsdlAnnotation } from './csdl-annotation';
+
 export class CsdlEnumType {
     constructor(
         public name: string,
@@ -7,9 +9,12 @@ export class CsdlEnumType {
     ) { }
 }
 
-export class CsdlEnumMember {
+export class CsdlEnumMember extends CsdlAnnotable {
     constructor(
         public name: string,
-        public value?: number
-    ) { }
+        public value?: number,
+        annotationList?: CsdlAnnotation[]
+    ) {
+      super(annotationList);
+    }
 }
