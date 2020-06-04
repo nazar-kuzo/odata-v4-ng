@@ -1,6 +1,6 @@
 {
   "name": "annotable-odata-v4-ng",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "license": "MIT",
   "description": "Client side OData V4 typescript library for Angular with inline annotation support forked from https://github.com/riccardomariani/odata-v4-ng",
   "repository": {

@@ -247,7 +247,8 @@ export class Metadata {
                         fieldValues[2],
                         fieldValues[3],
                         fieldValues[4],
-                        fieldValues[5]));
+                        fieldValues[5],
+                        fieldValues[6]));
                     break;
                 case Metadata.TAG_ENTITY_TYPE:
                     objects.push(new CsdlEntityType(
@@ -258,7 +259,8 @@ export class Metadata {
                         fieldValues[4],
                         fieldValues[5],
                         fieldValues[6],
-                        fieldValues[7]));
+                        fieldValues[7],
+                        fieldValues[8]));
                     break;
                 case Metadata.TAG_FUNCTION:
                     objects.push(new CsdlFunction(
@@ -547,7 +549,8 @@ export class Metadata {
                     new Field(Metadata.TAG_NAVIGATION_PROPERTY, FieldType.TAG),
                     new Field(Metadata.ATTRIBUTE_BASE_TYPE, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_OPEN_TYPE, FieldType.ATTRIBUTE),
-                    new Field(Metadata.ATTRIBUTE_ABSTRACT, FieldType.ATTRIBUTE)
+                    new Field(Metadata.ATTRIBUTE_ABSTRACT, FieldType.ATTRIBUTE),
+                    new Field(Metadata.TAG_ANNOTATION, FieldType.TAG)
                 ]);
             case Metadata.TAG_ENTITY_TYPE:
                 return this.getObjects(element, field.name, [
@@ -558,7 +561,8 @@ export class Metadata {
                     new Field(Metadata.ATTRIBUTE_BASE_TYPE, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_OPEN_TYPE, FieldType.ATTRIBUTE),
                     new Field(Metadata.ATTRIBUTE_HAS_STREAM, FieldType.ATTRIBUTE),
-                    new Field(Metadata.ATTRIBUTE_ABSTRACT, FieldType.ATTRIBUTE)
+                    new Field(Metadata.ATTRIBUTE_ABSTRACT, FieldType.ATTRIBUTE),
+                    new Field(Metadata.TAG_ANNOTATION, FieldType.TAG)
                 ]);
             case Metadata.TAG_FUNCTION:
                 return this.getObjects(element, field.name, [

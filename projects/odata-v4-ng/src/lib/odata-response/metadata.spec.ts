@@ -599,7 +599,7 @@ describe('Metadata', () => {
             new CsdlEntityType('Photo', new CsdlKey([new CsdlPropertyRef('Id')]), [
                 new CsdlProperty('Id', 'Edm.Int64', false, [new CsdlAnnotation('Org.OData.Core.V1.Permissions')]),
                 new CsdlProperty('Name', 'Edm.String')
-            ], undefined, undefined, undefined, true),
+            ], undefined, undefined, undefined, true, undefined, [new CsdlAnnotation('Org.OData.Core.V1.AcceptableMediaTypes')]),
             new CsdlEntityType('Person', new CsdlKey([new CsdlPropertyRef('UserName')]), [
                 new CsdlProperty('UserName', 'Edm.String', false, [new CsdlAnnotation('Org.OData.Core.V1.Permissions')]),
                 new CsdlProperty('FirstName', 'Edm.String', false),
